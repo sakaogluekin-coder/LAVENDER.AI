@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>JARVIS Mobile AI</title>
+  <title>J.A.R.V.I.S. AI System</title>
   
   <meta name="theme-color" content="#030712">
   <meta name="mobile-web-app-capable" content="yes">
@@ -27,14 +27,14 @@
       justify-content: space-between;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
       overflow: hidden;
     }
 
-    /* Üst Başlık */
     header {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 6px;
+      width: 100%;
     }
 
     .title {
@@ -46,21 +46,52 @@
     }
 
     .subtitle {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #0284c7;
       letter-spacing: 2px;
-      margin-top: 4px;
+      margin-top: 2px;
+    }
+
+    /* API Key Ayar Kutusu */
+    .api-container {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .api-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #38bdf8;
+      font-size: 0.75rem;
+      outline: none;
+    }
+
+    .api-btn {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: bold;
     }
 
     /* Dönen Jarvis Çekirdeği (Arc Reactor) */
     .core-container {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 20px 0;
+      margin: 15px 0;
       cursor: pointer;
     }
 
@@ -71,8 +102,8 @@
     }
 
     .ring-outer {
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       border-top-color: #38bdf8;
       border-bottom-color: #38bdf8;
       animation: spin 4s linear infinite;
@@ -80,22 +111,22 @@
     }
 
     .ring-inner {
-      width: 150px;
-      height: 150px;
+      width: 130px;
+      height: 130px;
       border-left-color: #0284c7;
       border-right-color: #0284c7;
       animation: spin-reverse 2.5s linear infinite;
     }
 
     .core-center {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       background: radial-gradient(circle, #38bdf8 0%, #030712 70%);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: bold;
       color: #fff;
       box-shadow: 0 0 25px #38bdf8;
@@ -103,7 +134,6 @@
       text-align: center;
     }
 
-    /* Dinleme Anında Kırmızı Efekt */
     .core-container.listening .ring-outer {
       border-top-color: #ef4444;
       border-bottom-color: #ef4444;
@@ -113,6 +143,11 @@
     .core-container.listening .core-center {
       background: radial-gradient(circle, #ef4444 0%, #030712 70%);
       box-shadow: 0 0 30px #ef4444;
+    }
+
+    .core-container.thinking .ring-outer {
+      border-top-color: #eab308;
+      border-bottom-color: #eab308;
     }
 
     @keyframes spin {
@@ -125,47 +160,48 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* Konuşma Balonu & Ekran Metni */
+    /* Sohbet Kutusu */
     .chat-box {
       width: 100%;
       max-width: 400px;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 16px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      max-height: 200px;
+      overflow-y: auto;
     }
 
     .msg-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #64748b;
       letter-spacing: 1px;
     }
 
     .user-msg {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #f8fafc;
-      min-height: 24px;
+      min-height: 20px;
     }
 
     .jarvis-msg {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #38bdf8;
       font-weight: 600;
-      min-height: 28px;
+      min-height: 24px;
+      line-height: 1.3;
     }
 
-    /* İpucu Alanı */
-    .hints {
-      font-size: 0.75rem;
+    .status-bar {
+      font-size: 0.7rem;
       color: #0284c7;
       text-align: center;
-      line-height: 1.4;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
   </style>
 </head>
@@ -173,10 +209,15 @@
 
   <header>
     <div class="title">J.A.R.V.I.S</div>
-    <div class="subtitle">SYSTEM ONLINE - MOBILE v1.0</div>
+    <div class="subtitle">AI NEURAL NETWORK - ONLINE</div>
   </header>
 
-  <!-- Ortadaki Dokunulabilir Jarvis Çekirdeği -->
+  <!-- API Key Giriş Kutusu (Telefonunun hafızasında saklanır) -->
+  <div class="api-container">
+    <input type="password" id="api-key" class="api-input" placeholder="Groq API Key yapıştırın..." />
+    <button class="api-btn" onclick="saveApiKey()">Kaydet</button>
+  </div>
+
   <div class="core-container" id="core-btn" onclick="startListening()">
     <div class="ring ring-outer"></div>
     <div class="ring ring-inner"></div>
@@ -186,17 +227,17 @@
   <div class="chat-box">
     <div>
       <div class="msg-label">SEN:</div>
-      <div class="user-msg" id="user-speech">Dinlemek için küreye dokun...</div>
+      <div class="user-msg" id="user-speech">Konuşmak için çekirdeğe dokunun...</div>
     </div>
     <hr style="border: 0; border-top: 1px solid rgba(56, 189, 248, 0.15);">
     <div>
       <div class="msg-label">JARVIS:</div>
-      <div class="jarvis-msg" id="jarvis-reply">Sistem hazır, Efendim.</div>
+      <div class="jarvis-msg" id="jarvis-reply">Sistemler aktif, sizi dinliyorum Efendim.</div>
     </div>
   </div>
 
-  <div class="hints">
-    💡 <strong>Dene:</strong> "Saat kaç?", "Nasılsın?", "YouTube'da Müzik Aç", "Arama yap: Iron Man"
+  <div class="status-bar" id="status-text">
+    💡 API Key kaydettikten sonra tek tıkla konuşmaya başlayabilirsiniz.
   </div>
 
   <script>
@@ -204,8 +245,26 @@
     const jarvisReplyEl = document.getElementById("jarvis-reply");
     const coreBtn = document.getElementById("core-btn");
     const coreText = document.getElementById("core-text");
+    const apiKeyInput = document.getElementById("api-key");
+    const statusText = document.getElementById("status-text");
 
-    // Web Speech API Ses Tanıma (Türkçe)
+    // Telefonun yerel hafızasından API anahtarını alır
+    let apiKey = localStorage.getItem("jarvis_groq_key") || "";
+    if (apiKey) {
+      apiKeyInput.value = apiKey;
+      statusText.innerText = "⚡ Yapay Zeka Beyni Bağlı!";
+    }
+
+    function saveApiKey() {
+      const key = apiKeyInput.value.trim();
+      if (key) {
+        localStorage.setItem("jarvis_groq_key", key);
+        apiKey = key;
+        alert("API Key telefona kaydedildi! Jarvis artık hazır.");
+        statusText.innerText = "⚡ Yapay Zeka Beyni Bağlandı!";
+      }
+    }
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
 
@@ -216,87 +275,94 @@
       recognition.interimResults = false;
 
       recognition.onstart = () => {
-        coreBtn.classList.add("listening");
+        coreBtn.className = "core-container listening";
         coreText.innerHTML = "DİNLİYOR...";
         userSpeechEl.innerText = "Sizi dinliyorum...";
       };
 
       recognition.onend = () => {
-        coreBtn.classList.remove("listening");
-        coreText.innerHTML = "DOKUN<br>KONUŞ";
+        if (!coreBtn.classList.contains("thinking")) {
+          coreBtn.className = "core-container";
+          coreText.innerHTML = "DOKUN<br>KONUŞ";
+        }
       };
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         userSpeechEl.innerText = `"${transcript}"`;
-        processCommand(transcript.toLowerCase());
+        askJarvisAI(transcript);
       };
 
       recognition.onerror = () => {
-        speak("Sizi tam anlayamadım Efendim, lütfen tekrar deneyin.");
-        coreBtn.classList.remove("listening");
+        speak("Sizi tam anlayamadım Efendim.");
+        coreBtn.className = "core-container";
         coreText.innerHTML = "DOKUN<br>KONUŞ";
       };
-    } else {
-      userSpeechEl.innerText = "Tarayıcınız ses tanımayı desteklemiyor (Chrome kullanın).";
     }
 
-    // Jarvis Sesli Yanıt Verme Fonksiyonu
+    // Sesli Konuşma
     function speak(text) {
       jarvisReplyEl.innerText = text;
       
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Önceki sesleri durdur
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'tr-TR';
-        utterance.rate = 0.95; // Konuşma hızı
-        utterance.pitch = 0.9;  // Ses tonu (biraz daha tok)
+        utterance.rate = 1.0;
+        utterance.pitch = 0.9;
         window.speechSynthesis.speak(utterance);
       }
     }
 
-    // Komut İşleme Mantığı
-    function processCommand(cmd) {
-      if (cmd.includes("saat") || cmd.includes("zaman")) {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        speak(`Saat şu an ${timeStr}, Efendim.`);
-      } 
-      else if (cmd.includes("gün") || cmd.includes("tarih")) {
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
-        speak(`Bugün ${dateStr}.`);
-      } 
-      else if (cmd.includes("nasılsın") || cmd.includes("durumun nasıl")) {
-        speak("Tüm sistemlerim %100 kapasiteyle çalışıyor. Siz nasılsınız Efendim?");
-      } 
-      else if (cmd.includes("kimsin") || cmd.includes("adın ne")) {
-        speak("Ben Jarvis. Sizin kişisel yapay zeka asistanınızım.");
+    // Yapay Zeka Sorgusu
+    async function askJarvisAI(userQuery) {
+      apiKey = localStorage.getItem("jarvis_groq_key");
+
+      if (!apiKey) {
+        speak("Efendim, önce yukarıdaki kutuya Groq API Key yapıştırıp Kaydet butonuna basmalısınız.");
+        return;
       }
-      else if (cmd.includes("arama yap") || cmd.includes("google'da ara")) {
-        const query = cmd.replace("arama yap", "").replace("google'da ara", "").trim();
-        if (query) {
-          speak(`Google üzerinde ${query} aranıyor.`);
-          setTimeout(() => {
-            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-          }, 1500);
+
+      coreBtn.className = "core-container thinking";
+      coreText.innerHTML = "DÜŞÜNÜYOR...";
+      jarvisReplyEl.innerText = "İşleniyor...";
+
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "llama-3.3-70b-versatile",
+            messages: [
+              {
+                role: "system",
+                content: "Sen Iron Man'in yapay zekası J.A.R.V.I.S.'sin. Kullanıcıya her zaman saygılı bir şekilde 'Efendim' diye hitap et. Yanıtların akıcı, bilgili, havalı ve konuşma diline uygun olsun. Sesli okunacağı için çok uzun yazma, 2-3 cümlelik öz ve akıllı yanıtlar ver."
+              },
+              {
+                role: "user",
+                content: userQuery
+              }
+            ],
+            max_tokens: 200
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.choices && data.choices[0]) {
+          const aiReply = data.choices[0].message.content;
+          speak(aiReply);
         } else {
-          speak("Ne aratmamı istersiniz Efendim?");
+          speak("Üzgünüm Efendim, yanıt alınamadı.");
         }
-      }
-      else if (cmd.includes("youtube") || cmd.includes("video aç") || cmd.includes("müzik aç")) {
-        const query = cmd.replace("youtube'da", "").replace("aç", "").replace("müzik", "").replace("video", "").trim();
-        speak(`YouTube üzerinde ${query || 'müzik'} açılıyor.`);
-        setTimeout(() => {
-          window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query || 'music')}`, '_blank');
-        }, 1500);
-      }
-      else if (cmd.includes("temizle") || cmd.includes("sıfırla")) {
-        userSpeechEl.innerText = "Dinlemek için küreye dokun...";
-        speak("Ekran temizlendi.");
-      }
-      else {
-        speak(`"${cmd}" komutunu aldım Efendim, ancak henüz sistemlerime tanımlı değil.`);
+      } catch (error) {
+        speak("Bağlantı hatası oluştu Efendim. API anahtarınızı kontrol edin.");
+      } finally {
+        coreBtn.className = "core-container";
+        coreText.innerHTML = "DOKUN<br>KONUŞ";
       }
     }
 
@@ -309,13 +375,6 @@
         }
       }
     }
-
-    // Sayfa açıldığında karşılama
-    window.onload = () => {
-      setTimeout(() => {
-        speak("Çevrimiçiyim Efendim. Sizi dinlemeye hazırım.");
-      }, 500);
-    };
   </script>
 </body>
 </html>
